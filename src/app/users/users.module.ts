@@ -15,6 +15,8 @@ import {
 } from '@angular/material';
 import {AddorupdateuserComponent} from '../addorupdateuser/addorupdateuser.component';
 import {AddorupdateuserModule} from '../addorupdateuser/addorupdateuser.module';
+import {UserService} from '../service/user.service';
+import {HttpClientModule} from '@angular/common/http';
 
 
 @NgModule({
@@ -31,7 +33,9 @@ import {AddorupdateuserModule} from '../addorupdateuser/addorupdateuser.module';
     MatIconModule,
     MatDialogModule,
     MatButtonModule,
-    MatTooltipModule
-  ]
+    MatTooltipModule,
+    HttpClientModule
+  ],
+  providers: [UserService]
 })
 export class UsersModule { }

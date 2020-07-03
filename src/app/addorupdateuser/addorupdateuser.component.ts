@@ -4,6 +4,8 @@ import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import {PNotifyService} from '../service/pnotify.service';
 import {User} from '../model/user';
 import Swal from 'sweetalert2';
+import {UserService} from '../service/user.service';
+import {AppResponse} from '../model/app-response';
 
 @Component({
   selector: 'app-addorupdateuser',
@@ -17,20 +19,19 @@ export class AddorupdateuserComponent implements OnInit {
   pnotify: any;
 
   constructor(public dialogRef: MatDialogRef<AddorupdateuserComponent>,
-              @Inject(MAT_DIALOG_DATA) public data: any , pNotifyService: PNotifyService) {
+              @Inject(MAT_DIALOG_DATA) public data: any , private userService: UserService) {
     this.userForm = new FormGroup({
-      firstName: new FormControl('', [Validators.required, Validators.maxLength(60)]),
-      lastName: new FormControl('', [Validators.required, Validators.maxLength(60)]),
+      firstname: new FormControl('', [Validators.required, Validators.maxLength(60)]),
+      lastname: new FormControl('', [Validators.required, Validators.maxLength(60)]),
       username: new FormControl('', [Validators.required, Validators.maxLength(60)]),
       email: new FormControl('', [Validators.required, Validators.maxLength(60), Validators.email])
     });
-    this.pnotify = pNotifyService.getPNotify();
     // loading the form if user want to update
     if (this.data.user !== undefined && this.data.user != null && this.data !== '') {
-      this.update = true;
+      this.update = this.data.update;
       this.userForm.patchValue(
-        {firstName : this.data.user.lastname,
-        lastName : this.data.user.firstname,
+        {firstname : this.data.user.lastname,
+        lastname : this.data.user.firstname,
         username : this.data.user.username,
         email : this.data.user.email}
       );
@@ -48,36 +49,64 @@ export class AddorupdateuserComponent implements OnInit {
             console.log(user);
 
             if (this.add === true) {
-              Swal.fire('INFO', 'Utilisateur ajouté avec succes ', 'success');
+              this.userService.createUser(user).subscribe(
+                (rep: AppResponse) => {
+                  Swal.fire('INFO', rep.message, 'success');
+                  this.dialogRef.close();
+                }, error1 => {
+                  if (error1.status === 400 && error1.error.etat === false) {
+                    Swal.fire('INFO', error1.error.message, 'error');
+
+                  }
+                }
+              );
 
             } else if (this.update === true) {
-              alert('updating');
+              this.userService.updateUser(this.data.user.id, user).subscribe(
+                (rep: AppResponse) => {
+                  Swal.fire('INFO', rep.message, 'success');
+                  this.dialogRef.close();
+                }, error1 => {
+                  if (error1.status === 400 && error1.error.etat === false) {
+                    Swal.fire('INFO', error1.error.message, 'error');
+
+                  }
+                }
+              );
             }
        }
 
   }
 
-  public deletUser(userToDelete: User) {
-    Swal.fire({
-      title: 'Etes vous sure?',
-      text: 'You won\'t be able to revert this!',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Oui!'
-    }).then((result) => {
-            Swal.fire(
-              'Deleted!',
-              'Supprimer .',
-              'success'
-            );
-
-    });
-
-  }
 
   ngOnInit() {
   }
 
+  closeDialog() {
+    this.userForm.reset();
+    this.dialogRef.close();
+  }
+
+  searchEmail(email: string) {
+    if (email !== '' && email !== undefined) {
+      this.userService.findUserByEmail(email).subscribe(
+        (rep: boolean) => {
+         if (rep === true) {
+           Swal.fire('INFO', 'Email existe deja', 'error');
+         }
+        }
+      );
+    }
+
+  }
+
+  searchUsername(username: string) {
+    this.userService.findUserByUsername(username).subscribe(
+      (rep: boolean) => {
+        if (rep === true) {
+          Swal.fire('INFO', 'Nom d\' utilisateur est deja pris', 'error');
+        }
+      }
+    );
+  }
 }

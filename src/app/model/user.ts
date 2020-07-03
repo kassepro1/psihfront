@@ -1,6 +1,7 @@
 export class User {
-  private firstname: string;
-  private lastname: string;
-  private username: string;
-  private email: string;
+ public id: number;
+  public firstname: string;
+  public lastname: string;
+  public username: string;
+  public email: string;
 }
