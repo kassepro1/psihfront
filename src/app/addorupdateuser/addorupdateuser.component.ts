@@ -30,8 +30,8 @@ export class AddorupdateuserComponent implements OnInit {
     if (this.data.user !== undefined && this.data.user != null && this.data !== '') {
       this.update = this.data.update;
       this.userForm.patchValue(
-        {firstname : this.data.user.lastname,
-        lastname : this.data.user.firstname,
+        {firstname : this.data.user.firstname,
+        lastname : this.data.user.lastname,
         username : this.data.user.username,
         email : this.data.user.email}
       );
@@ -46,8 +46,6 @@ export class AddorupdateuserComponent implements OnInit {
 
   public addOrUpdateUser(user) {
        if (this.userForm.valid) {
-            console.log(user);
-
             if (this.add === true) {
               this.userService.createUser(user).subscribe(
                 (rep: AppResponse) => {

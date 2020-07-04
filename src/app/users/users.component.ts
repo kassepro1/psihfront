@@ -58,6 +58,7 @@ export class UsersComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
+      this.loadUser();
       console.log('The dialog was closed');
     });
   }
