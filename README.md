@@ -17,4 +17,4 @@ type `docker build -t psih-front-image .` to build this project .
 ## Run in Docker type  :
  `docker run --name psih-front-container -d -p 8888:80 psih-front-image`
 ## Open in browser  : 
- `http://localhost:8888/users`
+ `http://localhost:8888`
