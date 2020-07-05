@@ -11,29 +11,29 @@
       </mat-card-header>
       <mat-card-content>
          <mat-form-field>
-           <input matInput type="text" placeholder="Nom " formControlName="lastname" id="lastname">
+           <input matInput type="text" placeholder="Nom " formControlName="lastname" id="lastname" name="lastname">
            <mat-error *ngIf="hasError('lastname','required')"></mat-error>
            <mat-error *ngIf="hasError('lastname','maxlength')"></mat-error>
          </mat-form-field>
         <mat-form-field>
-          <input matInput type="text" placeholder="Prenom" formControlName="firstname" id="firstname">
+          <input matInput type="text" placeholder="Prenom" formControlName="firstname" id="firstname" name="firstname">
           <mat-error *ngIf="hasError('firstname','required')"></mat-error>
           <mat-error *ngIf="hasError('firstname','maxlength')"></mat-error>
         </mat-form-field>
         <mat-form-field>
-          <input matInput type="text" placeholder="Nom d'utilisateur" formControlName="username" id="username" required (blur)="searchUsername($event.target.value)">
+          <input matInput type="text" placeholder="Nom d'utilisateur" formControlName="username" id="username" required (blur)="searchUsername($event.target.value)" name="username">
           <mat-error *ngIf="hasError('username','required')"></mat-error>
           <mat-error *ngIf="hasError('username','maxlength')"></mat-error>
         </mat-form-field>
         <mat-form-field>
-          <input matInput type="text" placeholder="Email" formControlName="email" id="email" required (blur)="searchEmail($event.target.value)">
+          <input matInput type="text" placeholder="Email" formControlName="email" id="email" required (blur)="searchEmail($event.target.value)" name="email">
 
           <mat-error *ngIf="hasError('email','required')"></mat-error>
           <mat-error *ngIf="hasError('email','maxlength')"></mat-error>
         </mat-form-field>
       </mat-card-content>
       <mat-card-actions align="center">
-        <button mat-raised-button color="primary" type="submit" [disabled]="!userForm.valid"> <i class="material-icons">save</i>
+        <button mat-raised-button color="primary" type="submit" [disabled]="!userForm.valid" name="addorupordateUser"> <i class="material-icons">save</i>
           <span>Enregistrer</span></button>
         <button mat-raised-button color="warn" type="reset" (click)="closeDialog()" > <i class="material-icons">cancel</i>
           <span>Annuler</span></button>
